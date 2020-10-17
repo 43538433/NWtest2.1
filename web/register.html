@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/register.css">
+    <!--导入jquery-->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!--导入将jq对象转换为json字符串插件-->
+    <script type="text/javascript" src="js/json.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //1.给“注册”按钮注册点击事件
+            $("#registerBtn").click(function () {
+                //提交异步的注册用户请求给后端
+                $.post({
+                    url:"UserServlet",
+                    //表单注册的用户数据+请求标识符action
+                    data:$("#registerForm").serialize(),
+                    success:function (result) {
+                        //4.获取服务器异步请求返回的结果
+                        if(result=="student"){
+                            //结果1：学生端
+                            location.href="home01.jsp";
+                        }
+                        if(result=="tutor"){
+                            //结果2：导师端
+                            location.href="home02.jsp";
+                        }
+                        if(result=="administrators"){
+                            //结果3：管理员端
+                            location.href="home03.jsp";
+                        }else{
+                            alert("用户名或密码错误！");
+                        }
+                    },
+                    error:function () {
+                        //返回系统异常，在error回调函数中弹出服务器忙
+                        alert("服务器忙，请稍后再试...");
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div class="rg_layout">
+    <div class="rg_form clearfix">
+        <div class="rg_form_left">
+            <p>导师预约</p>
+            <p>TUTOR RESERVATION</p>
+        </div>
+        <div class="rg_form_center">
+            <!--注册表单-->
+            <form id="registerForm" method="post">
+
+                <!--增加一个表单项存储请求标识符数据action-->
+                <input type="hidden" name="action" value="login">
+
+                <table style="margin-top: 25px;">
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="sid">工学号</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="sid" name="sid" placeholder="请输入工学号">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="name">姓名</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="name" name="name" placeholder="请输入真实姓名">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                            <label for="password">密码</label>
+                        </td>
+                        <td class="td_right">
+                            <input type="text" id="password" name="password" placeholder="请输入您的密码">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td_left">
+                        </td>
+                        <td class="td_right check">
+                            <input id="registerBtn" type="button" class="submit" value="登录">
+                            <span id="msg" style="color: rgba(251,62,40,0.8);font-size: 20px"></span>
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
